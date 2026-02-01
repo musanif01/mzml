@@ -146,6 +146,10 @@
   }
 }
 
+.animate-fade-in {
+  animation: fade-in 0.3s ease-in-out;
+}
+
 @keyframes border-dance {
   0%, 100% {
     border-color: var(--primary);
@@ -209,6 +213,12 @@
   left: 12px;
   right: -12px;
   bottom: -12px;
+}
+
+/* Geometric block hover text colors */
+.geometric-block:hover h4,
+.geometric-block:hover p {
+  color: var(--secondary) !important;
 }
 
 /* Contact info card specific styles */

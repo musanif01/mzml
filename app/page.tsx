@@ -1,11 +1,40 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import emailjs from '@emailjs/browser';
 import { Code, Globe, Smartphone, Palette, Wrench, Cloud, RefreshCw, ShoppingCart, ChevronRight, Star, Mail, Phone, MapPin, Menu, X, ArrowRight, ArrowUpRight, ExternalLink, Layers, Zap, Database, Workflow } from "lucide-react";
 
 export default function Home() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const formRef = useRef<HTMLFormElement>(null);
+
+  const sendEmail = (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitStatus('idle');
+
+    if (formRef.current) {
+      emailjs.sendForm(
+        'service_80z3wtx',
+        'template_joekkcg',
+        formRef.current,
+        'lbQnKi03BXTOw3MF4'
+      )
+        .then(() => {
+          setSubmitStatus('success');
+          setIsSubmitting(false);
+          if (formRef.current) {
+            formRef.current.reset();
+          }
+        }, () => {
+          setSubmitStatus('error');
+          setIsSubmitting(false);
+        });
+    }
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -278,22 +307,22 @@ export default function Home() {
             
             <div className="space-y-6">
               <div className="geometric-block p-6 group">
-                <h4 className="font-western text-2xl text-[#26538d] mb-2 transition-colors group-hover:text-[#1a3a5c]">Our Mission</h4>
-                <p className="font-typewriter text-sm text-[#1a1a1a]">
+                <h4 className="font-western text-2xl text-[#26538d] mb-2 transition-colors duration-300">Our Mission</h4>
+                <p className="font-typewriter text-sm text-[#1a1a1a] transition-colors duration-300">
                   To empower businesses with technology that drives growth, efficiency, and innovation.
                 </p>
               </div>
               
               <div className="geometric-block p-6 group">
-                <h4 className="font-western text-2xl text-[#26538d] mb-2 transition-colors group-hover:text-[#1a3a5c]">Our Vision</h4>
-                <p className="font-typewriter text-sm text-[#1a1a1a]">
+                <h4 className="font-western text-2xl text-[#26538d] mb-2 transition-colors duration-300">Our Vision</h4>
+                <p className="font-typewriter text-sm text-[#1a1a1a] transition-colors duration-300">
                   To be the premier partner for businesses seeking transformative digital solutions.
                 </p>
               </div>
               
               <div className="geometric-block p-6 group">
-                <h4 className="font-western text-2xl text-[#26538d] mb-2 transition-colors group-hover:text-[#1a3a5c]">Our Values</h4>
-                <p className="font-typewriter text-sm text-[#1a1a1a]">
+                <h4 className="font-western text-2xl text-[#26538d] mb-2 transition-colors duration-300">Our Values</h4>
+                <p className="font-typewriter text-sm text-[#1a1a1a] transition-colors duration-300">
                   Excellence, integrity, innovation, and unwavering commitment to client success.
                 </p>
               </div>
@@ -329,9 +358,6 @@ export default function Home() {
                 className="service-card p-6"
                 style={{animationDelay: `${index * 0.1}s`}}
               >
-                <div className="corner-decoration top-left"></div>
-                <div className="corner-decoration bottom-right"></div>
-                
                 <service.icon className="service-icon w-12 h-12 text-[#26538d] mb-4 transition-colors duration-300" />
                 <h3 className="service-title font-western text-xl text-[#1a1a1a] mb-3 transition-colors duration-300">
                   {service.title}
@@ -570,8 +596,8 @@ export default function Home() {
                   <Mail className="w-6 h-6" />
                 </div>
                 <div>
-                  <h4 className="font-western text-xl text-[#26538d] mb-1 transition-colors duration-300 group-hover:text-[#1a3a5c]">Email</h4>
-                  <p className="font-typewriter text-sm text-[#1a1a1a] transition-all duration-300 group-hover:text-[#26538d] group-hover:font-bold">
+                  <h4 className="font-western text-xl text-[#26538d] mb-1 transition-colors duration-300">Email</h4>
+                  <p className="font-typewriter text-sm text-[#1a1a1a] transition-all duration-300 group-hover:font-bold">
                     smmhd121@gmail.com
                   </p>
                 </div>
@@ -582,8 +608,8 @@ export default function Home() {
                   <Phone className="w-6 h-6" />
                 </div>
                 <div>
-                  <h4 className="font-western text-xl text-[#26538d] mb-1 transition-colors duration-300 group-hover:text-[#1a3a5c]">Phone</h4>
-                  <p className="font-typewriter text-sm text-[#1a1a1a] transition-all duration-300 group-hover:text-[#26538d] group-hover:font-bold">
+                  <h4 className="font-western text-xl text-[#26538d] mb-1 transition-colors duration-300">Phone</h4>
+                  <p className="font-typewriter text-sm text-[#1a1a1a] transition-all duration-300 group-hover:font-bold">
                     +91 8082008463
                   </p>
                 </div>
@@ -594,9 +620,9 @@ export default function Home() {
                   <MapPin className="w-6 h-6" />
                 </div>
                 <div>
-                  <h4 className="font-western text-xl text-[#26538d] mb-1 transition-colors duration-300 group-hover:text-[#1a3a5c]">Location</h4>
-                  <p className="font-typewriter text-sm text-[#1a1a1a] transition-all duration-300 group-hover:text-[#26538d] group-hover:font-bold">
-                    123 Innovation Drive, Tech City, TC 12345
+                  <h4 className="font-western text-xl text-[#26538d] mb-1 transition-colors duration-300">Location</h4>
+                  <p className="font-typewriter text-sm text-[#1a1a1a] transition-all duration-300 group-hover:font-bold">
+                    Smmhd, Pulwama, Jammu and Kashmir
                   </p>
                 </div>
               </div>
@@ -607,13 +633,33 @@ export default function Home() {
               <div className="corner-decoration top-left"></div>
               <div className="corner-decoration bottom-right"></div>
               
-              <form className="space-y-6">
+              {/* Success Alert */}
+              {submitStatus === 'success' && (
+                <div className="mb-6 p-4 bg-[#26538d] text-[#f0ffff] border-4 border-[#26538d] animate-fade-in">
+                  <p className="font-typewriter text-sm">
+                    Message sent successfully! We will contact you soon.
+                  </p>
+                </div>
+              )}
+
+              {/* Error Alert */}
+              {submitStatus === 'error' && (
+                <div className="mb-6 p-4 bg-[#f0ffff] text-[#26538d] border-4 border-[#26538d]">
+                  <p className="font-typewriter text-sm">
+                    Something went wrong. Please try again later.
+                  </p>
+                </div>
+              )}
+              
+              <form ref={formRef} onSubmit={sendEmail} className="space-y-6">
                 <div>
                   <label className="block font-typewriter text-sm uppercase tracking-wider text-[#26538d] mb-2">
                     Name
                   </label>
                   <input
                     type="text"
+                    name="user_name"
+                    required
                     className="w-full px-4 py-3 bg-[#faf9f6] border-4 border-[#26538d] font-typewriter text-[#1a1a1a] focus:outline-none focus:border-[#1a3a5c] focus:shadow-lg transition-all duration-300"
                     placeholder="Your name"
                   />
@@ -625,6 +671,8 @@ export default function Home() {
                   </label>
                   <input
                     type="email"
+                    name="user_email"
+                    required
                     className="w-full px-4 py-3 bg-[#faf9f6] border-4 border-[#26538d] font-typewriter text-[#1a1a1a] focus:outline-none focus:border-[#1a3a5c] focus:shadow-lg transition-all duration-300"
                     placeholder="your@email.com"
                   />
@@ -634,7 +682,7 @@ export default function Home() {
                   <label className="block font-typewriter text-sm uppercase tracking-wider text-[#26538d] mb-2">
                     Project Type
                   </label>
-                  <select className="w-full px-4 py-3 bg-[#faf9f6] border-4 border-[#26538d] font-typewriter text-[#1a1a1a] focus:outline-none focus:border-[#1a3a5c] focus:shadow-lg transition-all duration-300">
+                  <select name="project_type" required className="w-full px-4 py-3 bg-[#faf9f6] border-4 border-[#26538d] font-typewriter text-[#1a1a1a] focus:outline-none focus:border-[#1a3a5c] focus:shadow-lg transition-all duration-300">
                     <option value="">Select a service</option>
                     <option value="custom">Custom Software</option>
                     <option value="web">Web Development</option>
@@ -652,14 +700,20 @@ export default function Home() {
                     Message
                   </label>
                   <textarea
+                    name="message"
                     rows={4}
+                    required
                     className="w-full px-4 py-3 bg-[#faf9f6] border-4 border-[#26538d] font-typewriter text-[#1a1a1a] focus:outline-none focus:border-[#1a3a5c] focus:shadow-lg transition-all duration-300 resize-none"
                     placeholder="Tell us about your project..."
                   ></textarea>
                 </div>
                 
-                <button type="submit" className="w-full ticket-btn">
-                  Send Message
+                <button 
+                  type="submit" 
+                  disabled={isSubmitting}
+                  className={`w-full ticket-btn ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
+                >
+                  {isSubmitting ? 'Sending...' : 'Send Message'}
                 </button>
               </form>
             </div>
